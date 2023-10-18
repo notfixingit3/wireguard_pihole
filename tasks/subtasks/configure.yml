@@ -18,7 +18,7 @@
       ansible.builtin.file:
         path: /etc/nginx/sites-enabled/default
         state: absent
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Configure nginx site file Debian/Ubuntu
       template:
@@ -27,7 +27,7 @@
         owner: root
         group: root
         mode: u=wr,g=r,o=r
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Configure nginx site file for Redhat and Variants
       template:
@@ -36,9 +36,7 @@
         owner: root
         group: root
         mode: u=wr,g=r,o=r
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Create a symbolic link to enable nginx site config on Debian/Ubuntu
       ansible.builtin.file:
@@ -47,4 +45,4 @@
         owner: root
         group: root
         state: link
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
