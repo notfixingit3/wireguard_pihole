@@ -26,7 +26,10 @@
         port: '22'
         proto: tcp
         comment: allow ssh
-      when: SSH_LOCKDOWN |bool == false and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: >
+        SSH_LOCKDOWN |bool == false and
+        ansible_distribution == 'Debian' or
+        ansible_distribution == 'Ubuntu'
 
     - name: Allow all access to tcp port 22 for Fedora/CentOS
       ansible.posix.firewalld:
@@ -45,7 +48,10 @@
         proto: tcp
         src: '{{ MGMT_IP }}'
         comment: allow mgmt to ssh
-      when: SSH_LOCKDOWN |bool == true and ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: >
+        SSH_LOCKDOWN |bool == true and
+        ansible_distribution == 'Debian' or
+        ansible_distribution == 'Ubuntu'
 
     - name: Allow only MGMT IP only access to tcp port 22 Fedora/CentOS
       ansible.posix.firewalld:
