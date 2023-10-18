@@ -120,6 +120,15 @@
         comment: allow mgmt to pihole admin
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
+    - name: Allow Client access to Pihole UI on Debian/Ubuntu
+      community.general.ufw:
+        rule: allow
+        port: '80'
+        src: 10.252.1.0/24
+        dest: '{{ ansible_default_ipv4.address }}'
+        comment: allow mgmt to pihole admin
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
     - name: Allow MGMT access to Pihole UI on Fedora/CentOS
       ansible.posix.firewalld:
         rich_rule: rule family=ipv4 source address={{ MGMT_IP }} service name=http accept
