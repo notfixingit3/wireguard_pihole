@@ -25,7 +25,7 @@
         proto: tcp
         comment: allow ssh
       when: >
-        SSH_LOCKDOWN |bool == false and
+        "SSH_LOCKDOWN |bool == false" and
         ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow all access to tcp port 22 for Fedora/CentOS
@@ -35,7 +35,7 @@
         immediate: true
         state: enabled
       when: >
-        SSL_LOCKDOWN |bool == false and
+        "SSL_LOCKDOWN |bool == false" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow only MGMT IP access to tcp port 22 for Debian/Ubuntu
@@ -46,7 +46,7 @@
         src: '{{ MGMT_IP }}'
         comment: allow mgmt to ssh
       when: >
-        SSH_LOCKDOWN |bool == true and
+        "SSH_LOCKDOWN |bool == true" and
         ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow only MGMT IP only access to tcp port 22 Fedora/CentOS
@@ -56,7 +56,7 @@
         immediate: true
         state: enabled
       when: >
-        SSH_LOCKDOWN |bool == true and
+        "SSH_LOCKDOWN |bool == true" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Debian/Ubuntu
@@ -116,6 +116,14 @@
         comment: allow mgmt to pihole admin
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
+    - name: Allow MGMT access to Pihole UI on Fedora/CentOS
+      ansible.posix.firewalld:
+        rich_rule: rule family=ipv4 source address={{ MGMT_IP }} service name=http accept
+        permanent: true
+        immediate: true
+        state: enabled
+      when: ansible_distribution in ["Fedora", "CentOS"]
+
     - name: Allow Client access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
         rule: allow
@@ -125,9 +133,9 @@
         comment: allow mgmt to pihole admin
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
-    - name: Allow MGMT access to Pihole UI on Fedora/CentOS
+    - name: Allow Client access to Pihole UI on Fedora/CentOS
       ansible.posix.firewalld:
-        rich_rule: rule family=ipv4 source address={{ MGMT_IP }} service name=http accept
+        rich_rule: rule family=ipv4 source address=10.252.1.0/24 destination address={{ ansible_default_ipv4.address }} service name=http accept
         permanent: true
         immediate: true
         state: enabled
