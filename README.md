@@ -9,9 +9,9 @@ You want to appear to be coming from another location/country
 
 # OS Supported
 Debian 12 Bookworm  
-Ubuntu 22.04  
-CentOS Stream 9  
-Fedora Server 38  
+Ubuntu 22.04  Jammy
+CentOS Stream 9  (coming soon)
+Fedora Server 38  (coming soon)
 
 # Tested on
 Tested on DO $4 droplet Ubuntu 22.04  
