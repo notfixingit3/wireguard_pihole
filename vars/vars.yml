@@ -6,7 +6,7 @@ MGMT_IP: 0.0.0.0/0
 SSH_LOCKDOWN: false
 
 # Set to false, if you don't want Pihole Web UI or dns queries logged
-PI_LOGGING: true
+PI_LOGGING: "true"
 
 # Pihole admin web interface password, only valid if PI_LOGGING = true, username admin
 PI_WEBPASSWORD: "admin"  # or null
