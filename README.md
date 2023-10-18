@@ -18,7 +18,7 @@ Tested on DO $4 droplet Ubuntu 22.04
 Azure Standard_B1s $11/month Ubuntu 22.04  
 AWS t2.micro Ubuntu 22.04  
 
-# Make sure you can SSH under your current username and succesfully sudo -s  
+# Make sure you can SSH under your current username and successfully sudo -s  
 
 # Ansible local files
 Edit hosts file and change IP to your new VM Public IP  
