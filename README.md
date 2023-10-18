@@ -9,8 +9,8 @@ You want to appear to be coming from another location/country
 
 # OS Supported
 Debian 12 Bookworm  
-Ubuntu 22.04  Jammy
-CentOS Stream 9  (coming soon)
+Ubuntu 22.04  Jammy  
+CentOS Stream 9  (coming soon)  
 Fedora Server 38  (in progress)
 
 # Tested on
