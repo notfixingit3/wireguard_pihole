@@ -18,7 +18,7 @@
         state: latest
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow all access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -36,7 +36,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow only MGMT IP access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -55,7 +55,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Debian/Ubuntu
       community.general.ufw:
@@ -73,7 +73,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow all access to udp port {{ WG_PORT }} on Debian/Ubuntu
       community.general.ufw:
@@ -91,7 +91,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow VPN Clients access to Pihole for DNS on Debian/Ubuntu
       community.general.ufw:
@@ -110,7 +110,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Allow MGMT access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
@@ -128,7 +128,7 @@
         state: enabled
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Enable UFW
       community.general.ufw:

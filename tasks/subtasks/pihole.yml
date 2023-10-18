@@ -59,7 +59,7 @@
         dest: /etc/profile.d/usrlocal.sh
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: set pihole web password
       ansible.builtin.shell: |
@@ -67,7 +67,7 @@
         pihole -a -p "{{ PI_WEBPASSWORD }}"
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream' and
+        ansible_distribution == 'CentOS' and
         "PI_WEBPASSWORD != None"
 
     - name: set pihole web password

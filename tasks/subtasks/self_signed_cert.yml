@@ -17,14 +17,14 @@
         state: latest
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Create private key (RSA, 4096 bits) for Fedora/CentOS
       community.crypto.openssl_privatekey:
         path: /etc/ssl/{{ SERVER_FQDN }}.key
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Create certificate signing request (CSR) for self-signed certificate for Debian/Ubuntu
       community.crypto.openssl_csr:
@@ -46,7 +46,7 @@
           - "DNS:{{ SERVER_FQDN }}"
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Create self-signed certificate from CSR for Debian/Ubuntu
       community.crypto.x509_certificate:
@@ -66,4 +66,4 @@
         provider: selfsigned
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'

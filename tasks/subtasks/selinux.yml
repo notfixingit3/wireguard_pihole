@@ -12,7 +12,7 @@
       when: >
         ansible_selinux.status == "enabled" and
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: SELinux Boooleans - PiHole
       command: 'setsebool -P nis_enabled on'

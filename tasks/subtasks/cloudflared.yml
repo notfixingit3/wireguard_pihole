@@ -46,7 +46,7 @@
         group: root
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Update repositories cache and install "cloudflared" package for Debian/Ubuntu
       ansible.builtin.apt:
@@ -62,7 +62,7 @@
         state: latest
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Add cloudflared user
       ansible.builtin.user:

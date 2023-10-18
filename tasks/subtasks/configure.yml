@@ -38,7 +38,7 @@
         mode: u=wr,g=r,o=r
       when: >
         ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS Stream'
+        ansible_distribution == 'CentOS'
 
     - name: Create a symbolic link to enable nginx site config on Debian/Ubuntu
       ansible.builtin.file:
