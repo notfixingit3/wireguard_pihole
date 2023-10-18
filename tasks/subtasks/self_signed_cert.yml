@@ -67,3 +67,10 @@
       when: >
         ansible_distribution == 'Fedora' or
         ansible_distribution == 'CentOS'
+
+    - name: Enable nginx and reload now that cert is available
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+        masked: no
+        state: restarted

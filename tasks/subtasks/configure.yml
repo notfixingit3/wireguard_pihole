@@ -48,10 +48,3 @@
         group: root
         state: link
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-    - name: Enable nginx
-      ansible.builtin.systemd:
-        name: nginx
-        enabled: true
-        masked: no
-        state: restarted

@@ -38,6 +38,11 @@
         url: https://install.pi-hole.net
         dest: /tmp/basic-install.sh
 
+    - name: Stop nginx to make sure pihole install doesn't think something is on port 80 already
+      ansible.builtin.systemd:
+        name: nginx
+        state: stopped
+
     - name: Install PiHole on Debian/Ubuntu
       ansible.builtin.command: 'bash /tmp/basic-install.sh --unattended /dev/stdin'
       when: ansible_selinux.status == "disabled"

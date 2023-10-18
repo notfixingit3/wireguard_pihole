@@ -27,6 +27,11 @@
         masked: no
         state: restarted
 
+    - name: Start nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+
     - debug: msg="Happy Surfing"
 
     - debug: msg="WireGuard GUI https://{{ ansible_host }}:8443/"
