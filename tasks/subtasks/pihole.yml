@@ -61,6 +61,11 @@
         ansible_distribution == 'Fedora' or
         ansible_distribution == 'CentOS'
 
+    - name: Copy over list-update util script
+      ansible.builtin.copy:
+        src: ../../utils/list-update.py
+        dest: /etc/pihole/list-update.py
+
     - name: set pihole web password
       ansible.builtin.shell: |
         export PATH="$PATH:/usr/local/bin"
