@@ -29,6 +29,6 @@
 
     - debug: msg="Happy Surfing"
 
-    - debug: msg="WireGuard GUI https://{{ ansible_default_ipv4.address }}:8443/"
+    - debug: msg="WireGuard GUI https://{{ ansible_host }}:8443/"
 
-    - debug: msg="PiHole Admin http://{{ ansible_default_ipv4.address }}/"
+    - debug: msg="PiHole Admin http://{{ ansible_default_ipv4.address }}/admin/"
