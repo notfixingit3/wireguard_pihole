@@ -11,6 +11,7 @@
         name: "*"
         state: latest
         update_cache: true
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: Install "wireguard" package on Debian/Ubuntu
       ansible.builtin.apt:
