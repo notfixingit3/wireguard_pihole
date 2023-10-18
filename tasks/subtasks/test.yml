@@ -29,3 +29,4 @@
         ansible_distribution == 'AlmaLinux' or
         ansible_distribution == 'Amazon' or
         ansible_distribution_file_variety == 'SUSE'
+
