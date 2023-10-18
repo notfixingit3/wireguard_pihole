@@ -6,13 +6,6 @@
   become: true
 
   tasks:
-    - name: Enable nginx
-      ansible.builtin.systemd:
-        name: nginx
-        enabled: true
-        masked: no
-        state: restarted
-
     - name: Enable wireguard ui daemon
       ansible.builtin.systemd:
         name: wireguard-ui-daemon.service
