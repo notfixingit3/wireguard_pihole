@@ -1,0 +1,14 @@
+---
+- name: Configure sysctl on WireGuard Server
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - ansible.posix.sysctl:
+        name: net.ipv4.ip_forward
+        value: '1'
+        sysctl_set: true
+        state: present
+        reload: true

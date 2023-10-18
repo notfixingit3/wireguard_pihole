@@ -1,0 +1,68 @@
+---
+- name: Install PiHole
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Turn off systemd-resolved stub on Debian/Ubuntu
+      lineinfile:
+        path: /etc/systemd/resolved.conf
+        regex: '^DNSStubListener='
+        line: 'DNSStubListener=no'
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Restart resolved on Debian/Ubuntu
+      service:
+        name: systemd-resolved
+        state: restarted
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Create PiHole Dir
+      ansible.builtin.file:
+        path: /etc/pihole
+        state: directory
+        mode: '0755'
+
+    - name: Copy over setup template
+      ansible.builtin.template:
+        src: ../../templates/setupVars.conf.j2
+        dest: /etc/pihole/setupVars.conf
+        owner: root
+        group: root
+        mode: u=wr,g=r,o=r
+
+    - name: Download PiHole install script
+      ansible.builtin.get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/basic-install.sh
+
+    - name: Install PiHole on Debian/Ubuntu
+      ansible.builtin.command: 'bash /tmp/basic-install.sh --unattended /dev/stdin'
+      when: ansible_selinux.status == "disabled"
+
+    - name: Install PiHole on Fedora/CentOS with SELinux enabled
+      ansible.builtin.shell: |
+        export PIHOLE_SELINUX=true
+        bash /tmp/basic-install.sh --unattended /dev/stdin
+      when: ansible_selinux.status == "enabled"
+
+    - name: Remove Pihole installer file
+      ansible.builtin.file:
+        path: /tmp/basic-install.sh
+        state: absent
+
+    - name: Copy over path file
+      ansible.builtin.copy:
+        src: ../../templates/usrlocal.sh
+        dest: /etc/profile.d/usrlocal.sh
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: set pihole web password
+      ansible.builtin.shell: |
+        export PATH="$PATH:/usr/local/bin"
+        pihole -a -p "{{ PI_WEBPASSWORD }}"
+      when: "PI_WEBPASSWORD != None"

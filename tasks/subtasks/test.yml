@@ -1,0 +1,31 @@
+---
+- name: Enable and start services
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Fix nginx listen ipv6 80
+      lineinfile:
+        dest=/etc/nginx/nginx.conf
+        regexp='^(\s*[^#]*)]:80;(.*)$'
+        line='#\1]:8088;\2'
+        backrefs=yes
+      when: >
+        ansible_distribution == 'RedHat' or
+        ansible_distribution == 'AlmaLinux' or
+        ansible_distribution == 'Amazon' or
+        ansible_distribution_file_variety == 'SUSE'
+
+    - name: Fix nginx listen ipv4 80
+      lineinfile:
+        dest=/etc/nginx/nginx.conf
+        regexp='^(\s*[^#]*)\s80;(.*)$'
+        line='#\18088;\2'
+        backrefs=yes
+      when: >
+        ansible_distribution == 'RedHat' or
+        ansible_distribution == 'AlmaLinux' or
+        ansible_distribution == 'Amazon' or
+        ansible_distribution_file_variety == 'SUSE'

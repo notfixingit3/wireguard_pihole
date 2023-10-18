@@ -1,0 +1,37 @@
+---
+- name: Enable and start services
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Enable nginx
+      ansible.builtin.systemd:
+        name: nginx
+        enabled: true
+        masked: no
+        state: restarted
+
+    - name: Enable wireguard ui daemon
+      ansible.builtin.systemd:
+        name: wireguard-ui-daemon.service
+        enabled: true
+        masked: no
+        state: restarted
+
+    - name: Enable wireguard ui path
+      ansible.builtin.systemd:
+        name: wgui.path
+        enabled: true
+        masked: no
+        state: restarted
+
+    - name: Enable wireguard ui path
+      ansible.builtin.systemd:
+        name: wgui.service
+        enabled: true
+        masked: no
+        state: restarted
+
+    - debug: msg="Happy Surfing"

@@ -1,0 +1,15 @@
+[Unit]
+Description=WireGuard UI Daemon
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+User=root
+Group=root
+Type=simple
+WorkingDirectory=/opt/wireguard-ui
+EnvironmentFile=/opt/wireguard-ui/.env
+ExecStart=/opt/wireguard-ui/wireguard-ui -bind-address "127.0.0.1:5000"
+
+[Install]
+WantedBy=multi-user.target

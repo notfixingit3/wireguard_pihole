@@ -1,0 +1,50 @@
+---
+- name: Configure Wireguard
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Install Wireguard UI env file on Debian/Ubuntu
+      template:
+        src: ../../templates/env.j2
+        dest: /opt/wireguard-ui/.env
+        owner: root
+        group: root
+        mode: u=wr,g=r,o=r
+
+    - name: Remove default nginx site config on Debian/Ubuntu
+      ansible.builtin.file:
+        path: /etc/nginx/sites-enabled/default
+        state: absent
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Configure nginx site file Debian/Ubuntu
+      template:
+        src: ../../templates/nginx-wireguard_deb_generic.j2
+        dest: /etc/nginx/sites-available/wireguard
+        owner: root
+        group: root
+        mode: u=wr,g=r,o=r
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Configure nginx site file for Redhat and Variants
+      template:
+        src: ../../templates/nginx-wireguard_rhel_generic.j2
+        dest: /etc/nginx/conf.d/wireguard.conf
+        owner: root
+        group: root
+        mode: u=wr,g=r,o=r
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Create a symbolic link to enable nginx site config on Debian/Ubuntu
+      ansible.builtin.file:
+        src: /etc/nginx/sites-available/wireguard
+        dest: /etc/nginx/sites-enabled/wireguard
+        owner: root
+        group: root
+        state: link
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

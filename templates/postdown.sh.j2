@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+# /opt/wireguard-ui/postdown.sh
+ufw route delete allow in on wg0 out on {{ ansible_default_ipv4.interface }}
+iptables -t nat -D POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE

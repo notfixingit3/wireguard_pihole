@@ -1,0 +1,26 @@
+---
+- name: Install Wireguard OS CHeck
+  hosts: wg_vpn
+  become: false
+
+  tasks:
+    - name: Base information
+      ansible.builtin.debug:
+        msg:
+          - "Distro_Name: '{{ ansible_distribution }}'"
+          - "Distro_Version: '{{ ansible_distribution_version }}'"
+          - "Distro_Release: '{{ ansible_distribution_release }}'"
+          - "Distro_Family: '{{ ansible_os_family }}'"
+
+    - name: Check if OS is supported
+      ansible.builtin.fail:
+        msg: "I'm sorry your OS or Version has not been tested yet"
+      when: >
+        ansible_distribution not in ["Debian", "Ubuntu", "Fedora", "CentOS Stream"] or
+        ansible_distribution_version not in ["12", "22.04", "38", "9"]
+
+    - name: Check if OS Arch is supported
+      ansible.builtin.fail:
+        msg: "Im sorry, currently {{ ansible_architecture }} architecture is not supported yet"
+      when: >
+        ansible_architecture != 'x86_64'

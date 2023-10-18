@@ -1,0 +1,136 @@
+---
+- name: Install Wireguard
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Update repositories cache and install "wireguard" package on Debian/Ubuntu
+      ansible.builtin.apt:
+        name: wireguard
+        update_cache: true
+        state: present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Update repositories cache and install "wireguard-tools" package on Fedora/CentOS
+      ansible.builtin.dnf:
+        name: wireguard-tools
+        update_cache: true
+        state: latest
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Add the wireguard module and make sure it is loaded after reboots for Fedora/CentOS
+      community.general.modprobe:
+        name: wireguard
+        state: present
+        persistent: present
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Install "Nginx" package on Debian/Ubuntu
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Install "Nginx" package on Fedora/CentOS
+      ansible.builtin.dnf:
+        name: nginx
+        state: latest
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Install "Nginx Extras" package
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      when: ansible_distribution_file_variety == 'SUSE'
+
+    - name: Copy over Replacement nginx.conf for Fedora/CentOS
+      template:
+        src: ../../templates/nginx-rhel-generic.conf
+        dest: /etc/nginx/nginx.conf
+        mode: u=rwx,g=rx,o=rx
+        owner: root
+        group: root
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Download WG UI
+      ansible.builtin.unarchive:
+        src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE }}"
+        dest: /tmp
+        remote_src: true
+      when: ansible_architecture == 'x86_64'
+
+    - name: Download WG UI
+      ansible.builtin.unarchive:
+        src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE_ARM64 }}"
+        dest: /tmp
+        remote_src: true
+      when: ansible_architecture == 'arm64'
+
+    - name: Create WG UI Dir
+      ansible.builtin.file:
+        path: /opt/wireguard-ui
+        state: directory
+        mode: '0755'
+
+    - name: Copy over WG UI to final destination
+      ansible.builtin.copy:
+        src: /tmp/wireguard-ui
+        dest: /opt/wireguard-ui/wireguard-ui
+        remote_src: true
+        mode: u=rwx,g=rx,o=rx
+        owner: root
+        group: root
+
+    - name: Copy over WG PostUP Script
+      template:
+        src: ../../templates/postup.sh.j2
+        dest: /opt/wireguard-ui/postup.sh
+        mode: u=rwx,g=rx,o=rx
+        owner: root
+        group: root
+
+    - name: Copy over WG PostDown Script
+      template:
+        src: ../../templates/postdown.sh.j2
+        dest: /opt/wireguard-ui/postdown.sh
+        mode: u=rwx,g=rx,o=rx
+        owner: root
+        group: root
+
+    - name: Copy over systemd service file for UI daemon
+      ansible.builtin.copy:
+        src: ../../systemd/wireguard-ui-daemon.service
+        dest: /etc/systemd/system/wireguard-ui-daemon.service
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+
+    - name: Copy over systemd service file for UI
+      ansible.builtin.copy:
+        src: ../../systemd/wgui.service
+        dest: /etc/systemd/system/wgui.service
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+
+    - name: Copy over systemd service file for UI Path
+      ansible.builtin.copy:
+        src: ../../systemd/wgui.path
+        dest: /etc/systemd/system/wgui.path
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true

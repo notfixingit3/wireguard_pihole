@@ -1,0 +1,22 @@
+---
+# Tasks file for Wireguard
+
+- import_playbook: subtasks/check_supported.yml
+
+- import_playbook: subtasks/install.yml
+
+- import_playbook: subtasks/firewall.yml
+
+- import_playbook: subtasks/sysctl.yml
+
+- import_playbook: subtasks/configure.yml
+
+- import_playbook: subtasks/self_signed_cert.yml
+
+- import_playbook: subtasks/cloudflared.yml
+
+- import_playbook: subtasks/selinux.yml
+
+- import_playbook: subtasks/pihole.yml
+
+- import_playbook: subtasks/enable_start.yml

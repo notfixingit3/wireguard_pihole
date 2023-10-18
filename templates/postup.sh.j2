@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+# /opt/wireguard-ui/postup.sh
+ufw route allow in on wg0 out on {{ ansible_default_ipv4.interface }}
+iptables -t nat -I POSTROUTING -o {{ ansible_default_ipv4.interface }} -j MASQUERADE

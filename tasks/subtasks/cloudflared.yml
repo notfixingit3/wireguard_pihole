@@ -1,0 +1,105 @@
+---
+- name: Install Cloudflared for DoH support
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Create keyring directory if it does not exist for Debian/Ubuntu
+      ansible.builtin.file:
+        path: /usr/share/keyrings
+        state: directory
+        mode: '0755'
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Download keyring file from cloudflare for Debian/Ubuntu
+      ansible.builtin.get_url:
+        url: https://pkg.cloudflare.com/cloudflare-main.gpg
+        dest: /usr/share/keyrings/cloudflare-main.gpg
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Copy over cloudflared apt repo for Debian
+      template:
+        src: ../../templates/cloudflared_bookworm.list.j2
+        dest: /etc/apt/sources.list.d/cloudflared.list
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+      when: ansible_distribution == 'Debian'
+
+    - name: Copy over cloudflared apt repo for Ubuntu
+      template:
+        src: ../../templates/cloudflared_jammy.list.j2
+        dest: /etc/apt/sources.list.d/cloudflared.list
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+      when: ansible_distribution == 'Ubuntu'
+
+    - name: Copy over cloudflared apt repo for RedHat and Variants
+      template:
+        src: ../../templates/cloudflared-ascii_rhel_generic.repo.j2
+        dest: /etc/yum.repos.d/cloudflared.repo
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Update repositories cache and install "cloudflared" package for Debian/Ubuntu
+      ansible.builtin.apt:
+        name: cloudflared
+        update_cache: true
+        state: present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Update repositories cache and install "cloudflared" package RedHat/Alma/Amazon
+      ansible.builtin.dnf:
+        name: cloudflared
+        update_cache: true
+        state: latest
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
+    - name: Add cloudflared user
+      ansible.builtin.user:
+        name: cloudflared
+        system: true
+        create_home: false
+        shell: /usr/sbin/nologin
+
+    - name: Copy over cloudflared config
+      template:
+        src: ../../templates/cloudflared.j2
+        dest: /etc/default/cloudflared
+        mode: u=rw,g=r,o=r
+        owner: cloudflared
+        group: cloudflared
+
+    - name: Change ownership on cloudflard
+      ansible.builtin.file:
+        path: /usr/bin/cloudflared
+        owner: cloudflared
+        group: cloudflared
+
+    - name: Copy over cloudflared systemd service
+      ansible.builtin.copy:
+        src: ../../systemd/cloudflared.service
+        dest: /etc/systemd/system/cloudflared.service
+        mode: u=rw,g=r,o=r
+        owner: cloudflared
+        group: cloudflared
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Enable cloudflared
+      ansible.builtin.systemd:
+        name: cloudflared.service
+        enabled: true
+        masked: no
+        state: restarted
