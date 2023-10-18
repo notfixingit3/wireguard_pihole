@@ -10,7 +10,7 @@
       ansible.builtin.apt:
         name: ufw
         state: present
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Install "firewalld" if not already installed on Fedora/CentOS
       ansible.builtin.dnf:
@@ -28,8 +28,7 @@
         comment: allow ssh
       when: >
         SSH_LOCKDOWN |bool == false and
-        ansible_distribution == 'Debian' or
-        ansible_distribution == 'Ubuntu'
+        ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow all access to tcp port 22 for Fedora/CentOS
       ansible.posix.firewalld:
@@ -38,8 +37,8 @@
         immediate: true
         state: enabled
       when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+        SSL_LOCKDOWN |bool == false and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow only MGMT IP access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -50,8 +49,7 @@
         comment: allow mgmt to ssh
       when: >
         SSH_LOCKDOWN |bool == true and
-        ansible_distribution == 'Debian' or
-        ansible_distribution == 'Ubuntu'
+        ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow only MGMT IP only access to tcp port 22 Fedora/CentOS
       ansible.posix.firewalld:
@@ -60,8 +58,8 @@
         immediate: true
         state: enabled
       when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+        SSH_LOCKDOWN |bool == true and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Debian/Ubuntu
       community.general.ufw:
