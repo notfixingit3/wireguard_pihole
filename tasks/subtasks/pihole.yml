@@ -65,4 +65,15 @@
       ansible.builtin.shell: |
         export PATH="$PATH:/usr/local/bin"
         pihole -a -p "{{ PI_WEBPASSWORD }}"
-      when: "PI_WEBPASSWORD != None"
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream' and
+        "PI_WEBPASSWORD != None"
+
+    - name: set pihole web password
+      ansible.builtin.shell: |
+        pihole -a -p "{{ PI_WEBPASSWORD }}"
+      when: >
+        ansible_distribution == 'Debian' or
+        ansible_distribution == 'Ubuntu' and
+        "PI_WEBPASSWORD != None"
