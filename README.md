@@ -21,7 +21,7 @@ AWS t2.micro Ubuntu 22.04
 # Make sure you can SSH under your current username and succesfully sudo -s  
 
 # Ansible local files
-Edit hosts file and change IP to your new VM Public IP and set the username that you will use to ssh to VM with  
+Edit hosts file and change IP to your new VM Public IP  
 Edit vars/main.yml and adjust as needed  
 Install: ansible-playbook -i hosts tasks/main.yml -K  
 
