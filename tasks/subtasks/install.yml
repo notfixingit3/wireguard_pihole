@@ -12,7 +12,7 @@
         state: latest
         update_cache: true
 
-    - name: Update repositories cache and install "wireguard" package on Debian/Ubuntu
+    - name: Install "wireguard" package on Debian/Ubuntu
       ansible.builtin.apt:
         name: wireguard
         state: present
@@ -27,7 +27,7 @@
         ansible_distribution == 'Fedora' or
         ansible_distribution == 'CentOS'
 
-    - name: Update repositories cache and install "wireguard-tools" package on Fedora/CentOS
+    - name: Install "wireguard-tools" package on Fedora/CentOS
       ansible.builtin.dnf:
         name: wireguard-tools
         state: latest
