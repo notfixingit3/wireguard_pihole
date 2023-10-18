@@ -31,6 +31,20 @@
         ansible_distribution == 'Fedora' or
         ansible_distribution == 'CentOS Stream'
 
+    - name: Install python3-sqlalchemy on Debian/Ubuntu
+      ansible.builtin.apt:
+        name: python3-sqlalchemy
+        state: present
+      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+    - name: Install python3-sqlalchemy on Fedora/CentOS
+      ansible.builtin.dnf:
+        name: python3-sqlalchemy
+        state: latest
+      when: >
+        ansible_distribution == 'Fedora' or
+        ansible_distribution == 'CentOS Stream'
+
     - name: Install "Nginx" package on Debian/Ubuntu
       ansible.builtin.apt:
         name: nginx
