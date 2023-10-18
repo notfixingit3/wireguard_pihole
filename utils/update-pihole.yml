@@ -1,0 +1,8 @@
+---
+- name: Update Pihole
+  hosts: wg_vpn
+  become: true
+
+  tasks:
+    - name: Update Pihole
+      ansible.builtin.command: "pihole -up > /dev/null"
