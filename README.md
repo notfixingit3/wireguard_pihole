@@ -10,13 +10,13 @@ You want to appear to be coming from another location/country
 # OS Supported
 Debian 12 Bookworm  
 Ubuntu 22.04  
-CentOS Stream 9
-Fedora Server 38
+CentOS Stream 9  
+Fedora Server 38  
 
 # Tested on
 Tested on DO $4 droplet Ubuntu 22.04  
 Azure Standard_B1s $11/month Ubuntu 22.04  
-AWS t2.micro Ubuntu 22.04
+AWS t2.micro Ubuntu 22.04  
 
 # Make sure you can SSH under your current username and succesfully sudo -s  
 
@@ -33,8 +33,8 @@ Load up wiregguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*
     
 
 # Changelog
-10/17/23 Added some utils for expanding block list and updating pihole
-10/10/23 Added Support for AWS
+10/17/23 Added some utils for expanding block list and updating pihole  
+10/10/23 Added Support for AWS  
 10/8/23 Linted all playbooks  
 10/3/23 Added support for Azure (and probably AWS, etc. That do not assign IP directly to the VM)  
 9/30/23 Removed user having to specify interface in vars  
