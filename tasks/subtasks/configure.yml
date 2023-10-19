@@ -36,7 +36,7 @@
         owner: root
         group: root
         mode: u=wr,g=r,o=r
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Create a symbolic link to enable nginx site config on Debian/Ubuntu
       ansible.builtin.file:

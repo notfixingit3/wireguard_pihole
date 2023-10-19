@@ -11,7 +11,7 @@
         name: policycoreutils-python*
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole
       ansible.builtin.shell: |
@@ -23,7 +23,7 @@
         setsebool -P httpd_can_network_connect on
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Copy over SELinux context module
       ansible.builtin.copy:
@@ -31,25 +31,25 @@
         dest: /tmp/pihole.te
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
       ansible.builtin.command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
       ansible.builtin.command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
       ansible.builtin.command: 'semodule -i /tmp/pihole.pp'
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
@@ -57,7 +57,7 @@
         state: absent
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
@@ -65,7 +65,7 @@
         state: absent
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
@@ -73,4 +73,4 @@
         state: absent
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]

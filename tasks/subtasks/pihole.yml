@@ -62,6 +62,23 @@
         ansible_selinux.status == "disabled" and
         ansible_distribution in ["Fedora", "CentOS"]
 
+    - name: Install PiHole on AlmaLinux with SELinux enabled
+      ansible.builtin.shell: |
+        export PIHOLE_SELINUX=true
+        export PIHOLE_SKIP_OS_CHECK=true
+        bash /tmp/basic-install.sh --unattended /dev/stdin
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["AlmaLinux"]
+
+    - name: Install PiHole on AlmaLinux with SELinux disabled
+      ansible.builtin.shell: |
+        PIHOLE_SKIP_OS_CHECK=true
+        bash /tmp/basic-install.sh --unattended /dev/stdin
+      when: >
+        ansible_selinux.status == "disabled" and
+        ansible_distribution in ["AlmaLinux"]
+
     - name: Remove Pihole installer file
       ansible.builtin.file:
         path: /tmp/basic-install.sh
@@ -71,7 +88,7 @@
       ansible.builtin.copy:
         src: ../../templates/usrlocal.sh
         dest: /etc/profile.d/usrlocal.sh
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Copy over list-update util script
       ansible.builtin.copy:
@@ -84,7 +101,7 @@
         pihole -a -p "{{ PI_WEBPASSWORD }}"
       when: >
         "PI_WEBPASSWORD != None" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: set pihole web password on Debian/Ubuntu
       ansible.builtin.shell: |
@@ -97,4 +114,4 @@
       ansible.builtin.command: 'restorecon -R -v /var/www/html'
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]

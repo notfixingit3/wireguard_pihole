@@ -33,15 +33,15 @@
         enabled: true
         masked: no
         state: restarted
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Start nginx
       ansible.builtin.systemd:
         name: nginx
         state: restarted
 
-    - debug: msg="Happy Surfing"
-
-    - debug: msg="WireGuard GUI https://{{ ansible_host }}:8443/"
-
-    - debug: msg="PiHole Admin http://{{ ansible_default_ipv4.address }}/admin/"
+    - debug:
+        msg:
+          - "WireGuard GUI https://{{ ansible_host }}:8443/"
+          - "PiHole Admin http://{{ ansible_default_ipv4.address }}/admin/"
+          - "Happy Surfing"

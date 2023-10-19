@@ -16,7 +16,7 @@
       ansible.builtin.dnf:
         name: python3-cryptography
         state: latest
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Create private key (RSA, 4096 bits) for Debian/Ubuntu
       community.crypto.openssl_privatekey:
@@ -26,7 +26,7 @@
     - name: Create private key (RSA, 4096 bits) for Fedora/CentOS
       community.crypto.openssl_privatekey:
         path: /etc/ssl/{{ SERVER_FQDN }}.key
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Create certificate signing request (CSR) for self-signed certificate for Debian/Ubuntu
       community.crypto.openssl_csr:
@@ -46,7 +46,7 @@
         organization_name: "{{ ORG_NAME }}"
         subject_alt_name:
           - "DNS:{{ SERVER_FQDN }}"
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Create self-signed certificate from CSR for Debian/Ubuntu
       community.crypto.x509_certificate:
@@ -64,7 +64,7 @@
         privatekey_path: /etc/ssl/{{ SERVER_FQDN }}.key
         entrust_not_after: +1094d
         provider: selfsigned
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Enable nginx and reload now that cert is available
       ansible.builtin.systemd:

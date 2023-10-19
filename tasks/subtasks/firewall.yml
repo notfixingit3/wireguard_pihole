@@ -16,7 +16,7 @@
       ansible.builtin.dnf:
         name: firewalld
         state: latest
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow all access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -36,7 +36,7 @@
         state: enabled
       when: >
         "SSL_LOCKDOWN |bool == false" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow only MGMT IP access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -57,7 +57,7 @@
         state: enabled
       when: >
         "SSH_LOCKDOWN |bool == true" and
-        ansible_distribution in ["Fedora", "CentOS"]
+        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Debian/Ubuntu
       community.general.ufw:
@@ -73,7 +73,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow all access to udp port {{ WG_PORT }} on Debian/Ubuntu
       community.general.ufw:
@@ -89,7 +89,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow VPN Clients access to Pihole for DNS on Debian/Ubuntu
       community.general.ufw:
@@ -106,7 +106,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow MGMT access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
@@ -122,7 +122,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Allow Client access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
@@ -139,7 +139,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Enable UFW
       community.general.ufw:

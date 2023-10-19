@@ -44,7 +44,7 @@
         mode: u=rw,g=r,o=r
         owner: root
         group: root
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Update repositories cache and install "cloudflared" package for Debian/Ubuntu
       ansible.builtin.apt:
@@ -58,7 +58,7 @@
         name: cloudflared
         update_cache: true
         state: latest
-      when: ansible_distribution in ["Fedora", "CentOS"]
+      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
     - name: Add cloudflared user
       ansible.builtin.user:
