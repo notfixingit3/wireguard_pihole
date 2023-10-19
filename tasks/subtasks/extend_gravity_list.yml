@@ -1,0 +1,22 @@
+---
+- name: Extend Gravity list
+  hosts: wg_vpn
+  vars_files:
+    - "../../vars/vars.yml"
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: Download FireBog Ticketd List
+      ansible.builtin.get_url:
+        url: https://v.firebog.net/hosts/lists.php?type=tick
+        dest: /etc/pihole/firebog.list
+      when: "FIREBOG |bool == true"
+
+    - name: Update gravity.db
+      ansible.builtin.command: 'python3 /etc/pihole/list-update.py'
+      when: "FIREBOG |bool == true"
+
+    - name: Update entries
+      ansible.builtin.command: '/usr/local/bin/pihole -g'
+      when: "FIREBOG |bool == true"

@@ -2,10 +2,10 @@
 # You can visit https://ipchicken.com/ or https://ipquail.com/ if you don't know your current Public IP
 MGMT_IP: 0.0.0.0/0
 
-# Set to true if you want ssh locked down to MGMT_IP only like WG UI
+# Set to true if you want ssh locked down to MGMT_IP only like WG UI true/false
 SSH_LOCKDOWN: false
 
-# Set to false, if you don't want Pihole Web UI or dns queries logged
+# Set to false, if you don't want Pihole Web UI or dns queries logged true/false
 PI_LOGGING: "true"
 
 # Pihole admin web interface password, only valid if PI_LOGGING = true, username admin
@@ -39,6 +39,9 @@ WGUI_FILE_ARM64: wireguard-ui-v0.5.2-linux-arm64.tar.gz
 # Only change if you know what your doing
 DOH_SERVER_1: 1.1.1.1
 DOH_SERVER_2: 1.0.0.1
+
+# Use Ticked Firebog extended ad block list? https://v.firebog.net/hosts/lists.php true/false
+FIREBOG: true
 
 # IF you want to use the mail feature, uncomment here and in env.yml
 # I am not a fan of sending vpn client configs unencrypted, so I leave these blank

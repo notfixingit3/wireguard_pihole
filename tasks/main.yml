@@ -19,4 +19,6 @@
 
 - import_playbook: subtasks/pihole.yml
 
+- import_playbook: subtasks/extend_gravity_list.yml
+
 - import_playbook: subtasks/enable_start.yml
