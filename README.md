@@ -33,15 +33,15 @@ You will need to open the following
 
 
 # Ansible local files
-Edit hosts file and change IP to your new VM Public IP  
-Edit vars/main.yml and adjust as needed  
-Install: ansible-playbook -i hosts tasks/main.yml -K  
+* Edit hosts file and change IP to your new VM Public IP  
+* Edit vars/main.yml and adjust as needed  
+* Install: ansible-playbook -i hosts tasks/main.yml -K  
 
 # Wireguard UI
-Load up wiregguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*  
+Load up Wireguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*  
 * On Wireguard Clients Page, click New Client, enter name, leave the rest as default  
-     * Download user config or use QR code in Wirguard Mobile app  
-   * Apply settings in top right and test. 
+* Download user config or use QR code in Wirguard Mobile app  
+* Apply settings in top right and test. 
     
 
 # Changelog
