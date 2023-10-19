@@ -6,9 +6,10 @@
   become: true
 
   tasks:
-    - name: Create private key (RSA, 4096 bits) for Debian/Ubuntu
-      community.crypto.openssl_privatekey:
-        path: /etc/ssl/private/{{ SERVER_FQDN }}.key
+    - name: Install "python3-cryptography" package on Debian/Ubuntu
+      ansible.builtin.apt:
+        name: python3-cryptography
+        state: present
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Install "python3-cryptography" package on Fedora/CentOS
@@ -16,6 +17,11 @@
         name: python3-cryptography
         state: latest
       when: ansible_distribution in ["Fedora", "CentOS"]
+
+    - name: Create private key (RSA, 4096 bits) for Debian/Ubuntu
+      community.crypto.openssl_privatekey:
+        path: /etc/ssl/private/{{ SERVER_FQDN }}.key
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Create private key (RSA, 4096 bits) for Fedora/CentOS
       community.crypto.openssl_privatekey:
