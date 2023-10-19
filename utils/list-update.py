@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from time import time
 from requests import head
 
-AD_LISTS_FILE = "/etc/pihole/adlists.list"
+AD_LISTS_FILE = "/etc/pihole/firebog.list"
 
 
 engine = create_engine(
