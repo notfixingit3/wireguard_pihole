@@ -21,7 +21,7 @@ Azure Standard_B1s $11/month Ubuntu 22.04
 AWS t2.micro Ubuntu 22.04  
 
 # SSH User 
-Make sure you can ssh and sudo -s into your VPN before tne next step.  
+Make sure you can ssh and sudo -s into your VPS before tne next step.  
 If you need to use a different username, uncomment and set ansible_user in the host file. 
 
 # External Firewall: like Digital Ocean Firewall, Azure Inbound Ports, AWS Security Groups
