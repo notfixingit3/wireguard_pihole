@@ -1,5 +1,5 @@
-# Written for PiHole by Nikola Krgovic (nkrgovic at gmail dot com )
-# Release under EUPL
+# Originally wrote by Nikola Krgovic (nkrgovic at gmail dot com ) but outdated and no loner works
+# Had to make modifications
 
 module pihole 1.0;
 
@@ -36,6 +36,7 @@ require {
 	class netlink_selinux_socket { bind create } ;
 	class passwd rootok;
 	class process {signal setrlimit};
+	class process execmem;
 	class security compute_av;
 	class tcp_socket name_connect;
 }
@@ -60,6 +61,7 @@ allow httpd_t security_t:security compute_av;
 allow httpd_t self:capability setfcap;
 allow httpd_t self:netlink_selinux_socket { bind create };
 allow httpd_t self:passwd rootok;
+allow httpd_t self:process execmem;
 allow httpd_t systemd_logind_t:dbus send_msg;
 allow httpd_t var_log_t:file { open read setattr write create};
 allow httpd_t var_run_t:dir setattr;
