@@ -36,3 +36,14 @@
       ansible.builtin.fail:
         msg: "Ok exiting..."
       when: "confirm_ok_distro.user_input | bool == false"
+
+    - name: Confirm SELinux
+      pause:
+        prompt: "This VM has SELinux enabled, which is not officially supported by PiHole, continue? (yes/no)"
+      register: confirm_ok_selinux
+      when: ansible_selinux.status == "enabled"
+
+    - name: Exit
+      ansible.builtin.fail:
+        msg: "Ok exiting..."
+      when: "confirm_ok_selinux.user_input | bool == false"
