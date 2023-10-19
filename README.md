@@ -20,7 +20,15 @@ AWS t2.micro Ubuntu 22.04
 
 # SSH User 
 Make sure you can ssh and sudo -s into your VPN before tne next step.  
-If you need to use a different username, uncomment and set ansible_user in the host file.  
+If you need to use a different username, uncomment and set ansible_user in the host file. 
+
+# External Firewall: like Digital Ocean Firewall, Azure Inbound Ports, AWS Security Groups
+You will need to open the following  
+  * UDP > Port 443  
+  * TCP > Port 8443   
+  * TCP > Port 22
+  * Make sure to adjust these if you change any of the port settings in the vars file  
+
 
 # Ansible local files
 Edit hosts file and change IP to your new VM Public IP  
