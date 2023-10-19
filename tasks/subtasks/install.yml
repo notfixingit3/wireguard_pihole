@@ -67,7 +67,7 @@
       template:
         src: ../../templates/nginx-rhel-generic.conf
         dest: /etc/nginx/nginx.conf
-        mode: u=rwx,g=rx,o=rx
+        mode: u=rw,g=r,o=r
         owner: root
         group: root
       when: ansible_distribution in ["Fedora", "CentOS"]
