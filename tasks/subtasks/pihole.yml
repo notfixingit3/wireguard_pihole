@@ -6,18 +6,21 @@
   become: true
 
   tasks:
-    - name: Turn off systemd-resolved stub on Debian/Ubuntu
+    - name: Download PiHole install script
+      ansible.builtin.get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/basic-install.sh
+
+    - name: Turn off systemd-resolved stub
       lineinfile:
         path: /etc/systemd/resolved.conf
         regex: '^DNSStubListener='
         line: 'DNSStubListener=no'
-      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Restart resolved on Debian/Ubuntu
       service:
         name: systemd-resolved
         state: restarted
-      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Create PiHole Dir
       ansible.builtin.file:
@@ -32,11 +35,6 @@
         owner: root
         group: root
         mode: u=wr,g=r,o=r
-
-    - name: Download PiHole install script
-      ansible.builtin.get_url:
-        url: https://install.pi-hole.net
-        dest: /tmp/basic-install.sh
 
     - name: Stop nginx to make sure pihole install doesn't think something is on port 80 already
       ansible.builtin.systemd:
