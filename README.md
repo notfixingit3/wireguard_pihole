@@ -12,6 +12,7 @@ Debian 12
 Ubuntu 22.04  
 CentOS Stream 9  
 Fedora Server 38  
+AlmaLinux 9.2  
 
 # Tested on
 Tested on DO $4 droplet Ubuntu 22.04  
