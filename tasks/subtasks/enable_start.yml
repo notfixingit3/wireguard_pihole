@@ -27,6 +27,14 @@
         masked: no
         state: restarted
 
+    - name: Enable pihole-FTL on Fedora/CentOS
+      ansible.builtin.systemd:
+        name: pihole-FTL
+        enabled: true
+        masked: no
+        state: restarted
+      when: ansible_distribution in ["Fedora", "CentOS"]
+
     - name: Start nginx
       ansible.builtin.systemd:
         name: nginx

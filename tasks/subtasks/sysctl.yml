@@ -4,6 +4,7 @@
   vars_files:
     - "../../vars/vars.yml"
   become: true
+  gather_facts: false
 
   tasks:
     - ansible.posix.sysctl:

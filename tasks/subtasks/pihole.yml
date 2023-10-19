@@ -6,18 +6,21 @@
   become: true
 
   tasks:
-    - name: Turn off systemd-resolved stub on Debian/Ubuntu
+    - name: Download PiHole install script
+      ansible.builtin.get_url:
+        url: https://install.pi-hole.net
+        dest: /tmp/basic-install.sh
+
+    - name: Turn off systemd-resolved stub
       lineinfile:
         path: /etc/systemd/resolved.conf
         regex: '^DNSStubListener='
         line: 'DNSStubListener=no'
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: Restart resolved on Debian/Ubuntu
       service:
         name: systemd-resolved
         state: restarted
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
     - name: Create PiHole Dir
       ansible.builtin.file:
@@ -33,11 +36,6 @@
         group: root
         mode: u=wr,g=r,o=r
 
-    - name: Download PiHole install script
-      ansible.builtin.get_url:
-        url: https://install.pi-hole.net
-        dest: /tmp/basic-install.sh
-
     - name: Stop nginx to make sure pihole install doesn't think something is on port 80 already
       ansible.builtin.systemd:
         name: nginx
@@ -45,13 +43,24 @@
 
     - name: Install PiHole on Debian/Ubuntu
       ansible.builtin.command: 'bash /tmp/basic-install.sh --unattended /dev/stdin'
-      when: ansible_selinux.status == "disabled"
+      when: >
+        ansible_selinux.status == "disabled" and
+        ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Install PiHole on Fedora/CentOS with SELinux enabled
       ansible.builtin.shell: |
         export PIHOLE_SELINUX=true
         bash /tmp/basic-install.sh --unattended /dev/stdin
-      when: ansible_selinux.status == "enabled"
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
+
+    - name: Install PiHole on Fedora/CentOS with SELinux disabled
+      ansible.builtin.shell: |
+        bash /tmp/basic-install.sh --unattended /dev/stdin
+      when: >
+        ansible_selinux.status == "disabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Remove Pihole installer file
       ansible.builtin.file:
@@ -62,28 +71,30 @@
       ansible.builtin.copy:
         src: ../../templates/usrlocal.sh
         dest: /etc/profile.d/usrlocal.sh
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Copy over list-update util script
       ansible.builtin.copy:
         src: ../../utils/list-update.py
         dest: /etc/pihole/list-update.py
 
-    - name: set pihole web password
+    - name: set pihole web password on Fedora/CentOS
       ansible.builtin.shell: |
         export PATH="$PATH:/usr/local/bin"
         pihole -a -p "{{ PI_WEBPASSWORD }}"
       when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS' and
-        "PI_WEBPASSWORD != None"
+        "PI_WEBPASSWORD != None" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
-    - name: set pihole web password
+    - name: set pihole web password on Debian/Ubuntu
       ansible.builtin.shell: |
         pihole -a -p "{{ PI_WEBPASSWORD }}"
       when: >
-        ansible_distribution == 'Debian' or
-        ansible_distribution == 'Ubuntu' and
-        "PI_WEBPASSWORD != None"
+        "PI_WEBPASSWORD != None" and
+        ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: Fix SELinux File rules
+      ansible.builtin.command: 'restorecon -R -v /var/www/html'
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]

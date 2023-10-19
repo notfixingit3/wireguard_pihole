@@ -8,17 +8,19 @@ You want your traffic to be private
 You want to appear to be coming from another location/country  
 
 # OS Supported
-Debian 12 Bookworm  
-Ubuntu 22.04  Jammy  
-CentOS Stream 9  (coming soon)  
-Fedora Server 38  (coming soon)
+Debian 12  
+Ubuntu 22.04  
+CentOS Stream 9  
+Fedora Server 38  
 
 # Tested on
 Tested on DO $4 droplet Ubuntu 22.04  
 Azure Standard_B1s $11/month Ubuntu 22.04  
 AWS t2.micro Ubuntu 22.04  
 
-# Make sure you can SSH under your current username and successfully sudo -s  
+# SSH User 
+Make sure you can ssh and sudo -s into your VPN before tne next step.  
+If you need to use a different username, uncomment and set ansible_user in the host file.  
 
 # Ansible local files
 Edit hosts file and change IP to your new VM Public IP  
@@ -33,6 +35,7 @@ Load up wiregguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*
     
 
 # Changelog
+10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled
 10/17/23 Added some utils for expanding block list and updating pihole  
 10/10/23 Added Support for AWS  
 10/8/23 Linted all playbooks  

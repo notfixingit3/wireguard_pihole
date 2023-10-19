@@ -23,4 +23,4 @@
       ansible.builtin.fail:
         msg: "Im sorry, currently {{ ansible_architecture }} architecture is not supported yet"
       when: >
-        ansible_architecture != 'x86_64'
+        ansible_architecture not in ['x86_64']

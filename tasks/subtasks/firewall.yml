@@ -16,9 +16,7 @@
       ansible.builtin.dnf:
         name: firewalld
         state: latest
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow all access to tcp port 22 for Debian/Ubuntu
       community.general.ufw:
@@ -27,7 +25,7 @@
         proto: tcp
         comment: allow ssh
       when: >
-        SSH_LOCKDOWN |bool == false and
+        "SSH_LOCKDOWN |bool == false" and
         ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow all access to tcp port 22 for Fedora/CentOS
@@ -37,7 +35,7 @@
         immediate: true
         state: enabled
       when: >
-        SSL_LOCKDOWN |bool == false and
+        "SSL_LOCKDOWN |bool == false" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow only MGMT IP access to tcp port 22 for Debian/Ubuntu
@@ -48,7 +46,7 @@
         src: '{{ MGMT_IP }}'
         comment: allow mgmt to ssh
       when: >
-        SSH_LOCKDOWN |bool == true and
+        "SSH_LOCKDOWN |bool == true" and
         ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow only MGMT IP only access to tcp port 22 Fedora/CentOS
@@ -58,7 +56,7 @@
         immediate: true
         state: enabled
       when: >
-        SSH_LOCKDOWN |bool == true and
+        "SSH_LOCKDOWN |bool == true" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Debian/Ubuntu
@@ -67,7 +65,7 @@
         port: '{{ WGUI_PORT }}'
         src: '{{ MGMT_IP }}'
         comment: allow mgmt to wgui
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow MGMT IP access to port {{ WGUI_PORT }} on Fedora/CentOS
       ansible.posix.firewalld:
@@ -75,9 +73,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow all access to udp port {{ WG_PORT }} on Debian/Ubuntu
       community.general.ufw:
@@ -85,7 +81,7 @@
         port: '{{ WG_PORT }}'
         proto: udp
         comment: allow wireguard
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow all access to udp port {{ WG_PORT }} on Fedora/CentOS
       ansible.posix.firewalld:
@@ -93,9 +89,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow VPN Clients access to Pihole for DNS on Debian/Ubuntu
       community.general.ufw:
@@ -104,7 +98,7 @@
         src: 10.252.1.0/24
         dest: '{{ ansible_default_ipv4.address }}'
         comment: allow clients pihole dns
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Allow VPN Clients access to Pihole for DNS on Fedora/CentOS
       ansible.posix.firewalld:
@@ -112,9 +106,7 @@
         permanent: true
         immediate: true
         state: enabled
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow MGMT access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
@@ -122,7 +114,15 @@
         port: '80'
         src: '{{ MGMT_IP }}'
         comment: allow mgmt to pihole admin
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: Allow MGMT access to Pihole UI on Fedora/CentOS
+      ansible.posix.firewalld:
+        rich_rule: rule family=ipv4 source address={{ MGMT_IP }} service name=http accept
+        permanent: true
+        immediate: true
+        state: enabled
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Allow Client access to Pihole UI on Debian/Ubuntu
       community.general.ufw:
@@ -131,24 +131,22 @@
         src: 10.252.1.0/24
         dest: '{{ ansible_default_ipv4.address }}'
         comment: allow mgmt to pihole admin
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
-    - name: Allow MGMT access to Pihole UI on Fedora/CentOS
+    - name: Allow Client access to Pihole UI on Fedora/CentOS
       ansible.posix.firewalld:
-        rich_rule: rule family=ipv4 source address={{ MGMT_IP }} service name=http accept
+        rich_rule: rule family=ipv4 source address=10.252.1.0/24 destination address={{ ansible_default_ipv4.address }} service name=http accept
         permanent: true
         immediate: true
         state: enabled
-      when: >
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+      when: ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Enable UFW
       community.general.ufw:
         state: enabled
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Reload UFW
       community.general.ufw:
         state: reloaded
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+      when: ansible_distribution in ["Debian", "Ubuntu"]

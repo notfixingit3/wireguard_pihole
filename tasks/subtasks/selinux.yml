@@ -11,59 +11,66 @@
         name: policycoreutils-python*
       when: >
         ansible_selinux.status == "enabled" and
-        ansible_distribution == 'Fedora' or
-        ansible_distribution == 'CentOS'
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole
-      command: 'setsebool -P nis_enabled on'
-      when: ansible_selinux.status == "enabled"
-
-    - name: SELinux Boooleans - PiHole
-      command: 'setsebool -P domain_can_mmap_files on'
-      when: ansible_selinux.status == "enabled"
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_run_stickshift on'
-      when: ansible_selinux.status == "enabled"
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_setrlimit on'
-      when: ansible_selinux.status == "enabled"
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_mod_auth_pam on'
-      when: ansible_selinux.status == "enabled"
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_can_network_connect on'
-      when: ansible_selinux.status == "enabled"
+      ansible.builtin.shell: |
+        setsebool -P nis_enabled on
+        setsebool -P domain_can_mmap_files on
+        setsebool -P httpd_run_stickshift on
+        setsebool -P httpd_setrlimit on
+        setsebool -P httpd_mod_auth_pam on
+        setsebool -P httpd_can_network_connect on
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: Copy over SELinux context module
       ansible.builtin.copy:
         src: ../../templates/pihole.te
         dest: /tmp/pihole.te
-      when: ansible_selinux.status == "enabled"
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
-      when: ansible_selinux.status == "enabled"
+      ansible.builtin.command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
-      when: ansible_selinux.status == "enabled"
+      ansible.builtin.command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'semodule -i /tmp/pihole.pp'
-      when: ansible_selinux.status == "enabled"
+      ansible.builtin.command: 'semodule -i /tmp/pihole.pp'
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.mod
         state: absent
-      when: ansible_selinux.status == "enabled"
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.pp
         state: absent
-      when: ansible_selinux.status == "enabled"
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
+
+    - name: SELinux Boooleans - PiHole Cleanup
+      ansible.builtin.file:
+        path: /tmp/pihole.te
+        state: absent
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
