@@ -1,6 +1,7 @@
 # Info
 Meant to quickly spin up a Wireguard VPN running over 443  
-using pihole to block ads and DoH to protect dns queries
+using pihole to block ads and DoH to protect dns queries  
+via ansible  
 
 # Why?
 Bypass Hotel Wi-Fi filtering  
