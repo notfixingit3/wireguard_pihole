@@ -16,8 +16,8 @@
       ansible.builtin.fail:
         msg: "I'm sorry your OS or Version has not been tested yet"
       when: >
-        ansible_distribution not in ["Debian", "Ubuntu", "Fedora", "CentOS"] or
-        ansible_distribution_version not in ["12", "22.04", "38", "9"]
+        ansible_distribution not in ["Debian", "Ubuntu", "Fedora", "CentOS", "AlmaLinux"] or
+        ansible_distribution_version not in ["12", "22.04", "38", "9", "9.2"]
 
     - name: Check if OS Arch is supported
       ansible.builtin.fail:
