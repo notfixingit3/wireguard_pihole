@@ -1,6 +1,3 @@
-# Originally wrote by Nikola Krgovic (nkrgovic at gmail dot com ) but outdated and no loner works
-# Had to make modifications
-
 module pihole 1.0;
 
 require {
