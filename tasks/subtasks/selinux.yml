@@ -34,19 +34,19 @@
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
+      ansible.builtin.command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
       when: >
         ansible_selinux.status == "enabled" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
+      ansible.builtin.command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
       when: >
         ansible_selinux.status == "enabled" and
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole Build Custom module
-      command: 'semodule -i /tmp/pihole.pp'
+      ansible.builtin.command: 'semodule -i /tmp/pihole.pp'
       when: >
         ansible_selinux.status == "enabled" and
         ansible_distribution in ["Fedora", "CentOS"]
