@@ -49,6 +49,8 @@ SMTP_AUTH_TYPE: NONE
 SMTP_ENCRYPTION: NONE
 
 
+##DONT EDIT BEYOND THIS POINT
+
 # Future Arm64 support
 CLOUDFLARED_ARM64_DOWNLOAD: https://github.com/cloudflare/cloudflared/releases/download/2023.8.2/
 CLOUDFLARED_ARM64_FILE: cloudflared-linux-arm64
