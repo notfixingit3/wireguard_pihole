@@ -35,6 +35,11 @@ WGUI_DOWNLOAD: https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.
 WGUI_FILE: wireguard-ui-v0.5.2-linux-amd64.tar.gz
 WGUI_FILE_ARM64: wireguard-ui-v0.5.2-linux-arm64.tar.gz
 
+# Dns over HTTPS Servers (DoH) List Here https://dnscrypt.info/public-servers/
+# Only change if you know what your doing
+DOH_SERVER_1: 1.1.1.1
+DOH_SERVER_2: 1.0.0.1
+
 # IF you want to use the mail feature, uncomment here and in env.yml
 # I am not a fan of sending vpn client configs unencrypted, so I leave these blank
 # Reference https://github.com/ngoduykhanh/wireguard-ui#environment-variables
