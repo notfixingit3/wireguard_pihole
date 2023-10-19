@@ -20,7 +20,7 @@ AWS t2.micro Ubuntu 22.04
 
 # SSH User 
 Make sure you can ssh and sudo -s into your VPN before tne next step.  
-If you need to use a different username, set ansible_user in the host file.  
+If you need to use a different username, uncomment and set ansible_user in the host file.  
 
 # Ansible local files
 Edit hosts file and change IP to your new VM Public IP  
