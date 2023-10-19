@@ -35,7 +35,7 @@ Load up wiregguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*
     
 
 # Changelog
-10/19/23 Added Support to change DoH Servers  
+10/19/23 Added Support to change DoH Servers, AlmaLinux, and FireBog Extended block list  
 10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
 10/17/23 Added some utils for expanding block list and updating pihole  
 10/10/23 Added Support for AWS  
