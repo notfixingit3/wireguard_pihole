@@ -14,37 +14,13 @@
         ansible_distribution in ["Fedora", "CentOS"]
 
     - name: SELinux Boooleans - PiHole
-      command: 'setsebool -P nis_enabled on'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
-
-    - name: SELinux Boooleans - PiHole
-      command: 'setsebool -P domain_can_mmap_files on'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_run_stickshift on'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_setrlimit on'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_mod_auth_pam on'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS"]
-
-    - name: SELinux Boooleans - PiHole HTTP
-      command: 'setsebool -P httpd_can_network_connect on'
+      ansible.builtin.shell: |
+        setsebool -P nis_enabled on
+        setsebool -P domain_can_mmap_files on
+        setsebool -P httpd_run_stickshift on
+        setsebool -P httpd_setrlimit on
+        setsebool -P httpd_mod_auth_pam on
+        setsebool -P httpd_can_network_connect on
       when: >
         ansible_selinux.status == "enabled" and
         ansible_distribution in ["Fedora", "CentOS"]
@@ -86,6 +62,14 @@
     - name: SELinux Boooleans - PiHole Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.pp
+        state: absent
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
+
+    - name: SELinux Boooleans - PiHole Cleanup
+      ansible.builtin.file:
+        path: /tmp/pihole.te
         state: absent
       when: >
         ansible_selinux.status == "enabled" and
