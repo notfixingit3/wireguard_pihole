@@ -55,6 +55,13 @@
         ansible_selinux.status == "enabled" and
         ansible_distribution in ["Fedora", "CentOS"]
 
+    - name: Install PiHole on Fedora/CentOS with SELinux disabled
+      ansible.builtin.shell: |
+        bash /tmp/basic-install.sh --unattended /dev/stdin
+      when: >
+        ansible_selinux.status == "disabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
+
     - name: Remove Pihole installer file
       ansible.builtin.file:
         path: /tmp/basic-install.sh
@@ -85,3 +92,9 @@
       when: >
         "PI_WEBPASSWORD != None" and
         ansible_distribution in ["Debian", "Ubuntu"]
+
+    - name: Fix SELinux File rules
+      ansible.builtin.command: 'restorecon -R -v /var/www/html'
+      when: >
+        ansible_selinux.status == "enabled" and
+        ansible_distribution in ["Fedora", "CentOS"]
