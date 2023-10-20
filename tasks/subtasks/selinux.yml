@@ -4,14 +4,13 @@
   vars_files:
     - "../../vars/vars.yml"
   become: true
+  gather_facts: true
 
   tasks:
     - name: Install SELinux Userland tools
       ansible.builtin.dnf:
         name: policycoreutils-python*
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
     - name: SELinux Boooleans - PiHole
       ansible.builtin.shell: |
@@ -21,56 +20,40 @@
         setsebool -P httpd_setrlimit on
         setsebool -P httpd_mod_auth_pam on
         setsebool -P httpd_can_network_connect on
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
     - name: Copy over SELinux context module
       ansible.builtin.copy:
-        src: ../../templates/pihole.te
+        src: ../../files/pihole.te
         dest: /tmp/pihole.te
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Build Custom module
+    - name: SELinux Boooleans - PiHole Build SELinux mod
       ansible.builtin.command: 'checkmodule -M -m -o /tmp/pihole.mod /tmp/pihole.te'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Build Custom module
+    - name: SELinux Boooleans - PiHole Convert mod to pp
       ansible.builtin.command: 'semodule_package -o /tmp/pihole.pp -m /tmp/pihole.mod'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Build Custom module
+    - name: SELinux Boooleans - PiHole install custom module
       ansible.builtin.command: 'semodule -i /tmp/pihole.pp'
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Cleanup
+    - name: SELinux Boooleans - PiHole SELinux Module Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.mod
         state: absent
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Cleanup
+    - name: SELinux Boooleans - PiHole SELinux Module Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.pp
         state: absent
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
 
-    - name: SELinux Boooleans - PiHole Cleanup
+    - name: SELinux Boooleans - PiHole SELinux Module Cleanup
       ansible.builtin.file:
         path: /tmp/pihole.te
         state: absent
-      when: >
-        ansible_selinux.status == "enabled" and
-        ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
+      when: ansible_selinux.status == "enabled"
