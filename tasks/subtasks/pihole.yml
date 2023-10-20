@@ -11,16 +11,23 @@
         url: https://install.pi-hole.net
         dest: /tmp/basic-install.sh
 
+    - name: Check if systemd-resolved config file exists
+      stat:
+        path: /etc/systemd/resolved.conf
+      register: systemd_resolve
+
     - name: Turn off systemd-resolved stub
       lineinfile:
         path: /etc/systemd/resolved.conf
         regex: '^DNSStubListener='
         line: 'DNSStubListener=no'
+      when: systemd_resolve.stat.exists == True
 
     - name: Restart resolved on Debian/Ubuntu
       service:
         name: systemd-resolved
         state: restarted
+      when: systemd_resolve.stat.exists == True
 
     - name: Create PiHole Dir
       ansible.builtin.file:
