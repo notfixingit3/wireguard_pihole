@@ -93,7 +93,7 @@
 
     - name: Copy over path file
       ansible.builtin.copy:
-        src: ../../templates/usrlocal.sh
+        src: ../../files/usrlocal.sh
         dest: /etc/profile.d/usrlocal.sh
       when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
