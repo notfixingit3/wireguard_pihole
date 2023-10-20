@@ -54,4 +54,4 @@ Load up Wireguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*
 9/30/23 Removed user having to specify interface in vars  
 9/26/23 Got bored, started this  
 
-# Sometimes the lie is easier to live with ~ Tom M
+# Sometimes the lie is easier to live with ~ Tom
