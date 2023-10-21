@@ -16,9 +16,9 @@ Fedora Server 38
 AlmaLinux 9.2  
 
 # Tested on
-Tested on DO $4 droplet Ubuntu 22.04  
-Azure Standard_B1s $11/month Ubuntu 22.04  
-AWS t2.micro Ubuntu 22.04  
+Tested on DO $4 droplet  
+Azure Standard_B1s $11/month  
+AWS t2.micro   
 
 # SSH User 
 Make sure you can ssh and sudo -s into your VPS before tne next step.  
@@ -32,13 +32,13 @@ You will need to open the following
   * Make sure to adjust these if you change any of the port settings in the vars file  
 
 
-# Ansible local files
+# Ansible local files - install
 * Edit hosts file and change IP to your new VM Public IP  
 * Edit vars/main.yml and adjust as needed  
 * Install: ansible-playbook -i hosts tasks/main.yml -K  
 
 # Wireguard UI
-Load up Wireguard UI https://<vm-ip>:8443/ *sometimes takes a second for it*  
+Load up Wireguard UI *sometimes takes a second for it*  
 * On Wireguard Clients Page, click New Client, enter name, leave the rest as default  
 * Download user config or use QR code in Wirguard Mobile app  
 * Apply settings in top right and test. 
