@@ -1,12 +1,12 @@
 ---
-- name: Configure Wireguard
+- name: Configure WireGuard
   hosts: wg_vpn
   vars_files:
     - "../../vars/vars.yml"
   become: true
 
   tasks:
-    - name: Install Wireguard UI env file on Debian/Ubuntu
+    - name: Install WireGuard UI env file on Debian/Ubuntu
       template:
         src: ../../templates/env.j2
         dest: /opt/wireguard-ui/.env

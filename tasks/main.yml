@@ -1,5 +1,5 @@
 ---
-# Tasks file for Wireguard
+# Tasks file for WireGuard
 
 - import_playbook: subtasks/check_supported.yml
 

@@ -1,5 +1,5 @@
 ---
-- name: Install Wireguard OS CHeck
+- name: Install WireGuard OS CHeck
   hosts: wg_vpn
   become: false
 
