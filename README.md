@@ -1,5 +1,5 @@
 # Info
-Meant to quickly spin up a Wireguard VPN running over 443  
+Meant to quickly spin up a WireGuard VPN running over 443  
 using pihole to block ads and DoH to protect dns queries  
 via ansible  
 
@@ -37,9 +37,9 @@ You will need to open the following
 * Edit vars/main.yml and adjust as needed  
 * Install: ansible-playbook -i hosts tasks/main.yml -K  
 
-## Wireguard UI
-Load up Wireguard UI *sometimes takes a second for it*  
-* On Wireguard Clients Page, click New Client, enter name, leave the rest as default  
+## WireGuard UI
+Load up WireGuard UI *sometimes takes a second for it*  
+* On WireGuard Clients Page, click New Client, enter name, leave the rest as default  
 * Download user config or use QR code in Wirguard Mobile app  
 * Apply settings in top right and test. 
     
