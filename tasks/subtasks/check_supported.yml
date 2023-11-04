@@ -48,4 +48,6 @@
     - name: Exit
       ansible.builtin.fail:
         msg: "Ok exiting..."
-      when: "confirm_ok_selinux.user_input | bool == false"
+      when: >
+        "confirm_ok_selinux.user_input | bool == false" and
+        ansible_selinux.status == "enabled"
