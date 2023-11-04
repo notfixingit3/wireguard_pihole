@@ -35,7 +35,9 @@
     - name: Exit
       ansible.builtin.fail:
         msg: "Ok exiting..."
-      when: "confirm_ok_distro.user_input | bool == false"
+      when: >
+        ansible_distribution in ["AlmaLinux"]
+        "confirm_ok_distro.user_input | bool == false"
 
     - name: Confirm SELinux
       pause:
