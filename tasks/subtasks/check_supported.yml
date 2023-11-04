@@ -36,7 +36,7 @@
       ansible.builtin.fail:
         msg: "Ok exiting..."
       when: >
-        ansible_distribution in ["AlmaLinux"]
+        ansible_distribution in ["AlmaLinux"] and
         "confirm_ok_distro.user_input | bool == false"
 
     - name: Confirm SELinux
