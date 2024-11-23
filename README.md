@@ -46,6 +46,7 @@ Load up WireGuard UI *sometimes takes a second for it*
 
 ## Changelog
 11/22/24 Started testing Ubuntu 24.04, inline upgrade seems to work
+
 10/19/23 Added Support For AlmaLinux, changing DoH Servers, and FireBog Extended block list  
 10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
 10/17/23 Added some utils for expanding block list and updating pihole  
