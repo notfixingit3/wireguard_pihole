@@ -10,7 +10,7 @@ You want to appear to be coming from another location/country
 
 ## OS Supported
 Debian 12  
-Ubuntu 22.04  
+Ubuntu 22.04 and possible 24.04, more testing needed. 
 CentOS Stream 9  
 Fedora Server 38  
 AlmaLinux 9.2  
