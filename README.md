@@ -9,16 +9,17 @@ You want your traffic to be private
 You want to appear to be coming from another location/country  
 
 ## OS Supported
-Debian 12  
-Ubuntu 22.04 and possible 24.04, more testing needed. 
-CentOS Stream 9  
-Fedora Server 38  
-AlmaLinux 9.2  
+  * Debian 12  
+  * Ubuntu 22.04
+  * Ubuntu 24.04, more testing needed. Must use cloudflared from jammy release but seems to work fine so far.
+  * CentOS Stream 9
+  * Fedora Server 38
+  * AlmaLinux 9.2  
 
 ## Tested on
-Tested on DO $4 droplet  
-Azure Standard_B1s $11/month  
-AWS t2.micro   
+  * DO $4 droplet  
+  * Azure Standard_B1s $11/month  
+  * AWS t2.micro   
 
 ## SSH User 
 Make sure you can ssh and sudo -s into your VPS before tne next step.  
@@ -46,7 +47,6 @@ Load up WireGuard UI *sometimes takes a second for it*
 
 ## Changelog
 11/22/24 Started testing Ubuntu 24.04, inline upgrade seems to work
-
 10/19/23 Added Support For AlmaLinux, changing DoH Servers, and FireBog Extended block list  
 10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
 10/17/23 Added some utils for expanding block list and updating pihole  
