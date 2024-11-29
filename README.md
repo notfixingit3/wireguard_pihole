@@ -46,14 +46,14 @@ Load up WireGuard UI *sometimes takes a second for it*
     
 
 ## Changelog
-11/22/24 Started testing Ubuntu 24.04, inline upgrade seems to work
-10/19/23 Added Support For AlmaLinux, changing DoH Servers, and FireBog Extended block list  
-10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
-10/17/23 Added some utils for expanding block list and updating pihole  
-10/10/23 Added Support for AWS  
-10/8/23 Linted all playbooks  
-10/3/23 Added support for Azure (and probably AWS, etc. That do not assign IP directly to the VM)  
-9/30/23 Removed user having to specify interface in vars  
-9/26/23 Got bored, started this  
+* 11/22/24 Started testing Ubuntu 24.04, inline upgrade seems to work
+* 10/19/23 Added Support For AlmaLinux, changing DoH Servers, and FireBog Extended block list  
+* 10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
+* 10/17/23 Added some utils for expanding block list and updating pihole  
+* 10/10/23 Added Support for AWS  
+* 10/8/23 Linted all playbooks  
+* 10/3/23 Added support for Azure (and probably AWS, etc. That do not assign IP directly to the VM)  
+* 9/30/23 Removed user having to specify interface in vars  
+* 9/26/23 Got bored, started this  
 
 ## Sometimes the lie is easier to live with ~ Tom
