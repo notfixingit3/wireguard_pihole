@@ -11,7 +11,7 @@ You want to appear to be coming from another location/country
 ## OS Supported
   * Debian 12  
   * Ubuntu 22.04
-  * Ubuntu 24.04, more testing needed. Must use cloudflared from jammy release but seems to work fine so far.
+  * Ubuntu 24.04
   * CentOS Stream 9
   * Fedora Server 38
   * AlmaLinux 9.2  
@@ -46,6 +46,7 @@ Load up WireGuard UI *sometimes takes a second for it*
     
 
 ## Changelog
+* 5/8/25 Finished adding support for 24.04 after fully testing Cloudflared 24.04 release. Also upped wireguard-ui to 0.6.2
 * 11/22/24 Started testing Ubuntu 24.04, inline upgrade seems to work
 * 10/19/23 Added Support For AlmaLinux, changing DoH Servers, and FireBog Extended block list  
 * 10/19/23 Added Support For Fedora Server 38 and CentOS Stream 9 with SELinux Enabled  
