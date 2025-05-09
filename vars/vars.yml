@@ -31,9 +31,9 @@ WGUI_PORT: 8443
 WG_PORT: 443
 
 # Reference here for the latest https://github.com/ngoduykhanh/wireguard-ui/releases
-WGUI_DOWNLOAD: https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.5.2/
-WGUI_FILE: wireguard-ui-v0.5.2-linux-amd64.tar.gz
-WGUI_FILE_ARM64: wireguard-ui-v0.5.2-linux-arm64.tar.gz
+WGUI_DOWNLOAD: https://github.com/ngoduykhanh/wireguard-ui/releases/download/v0.6.2/
+WGUI_FILE: wireguard-ui-v0.6.2-linux-amd64.tar.gz
+WGUI_FILE_ARM64: wireguard-ui-v0.6.2-linux-arm64.tar.gz
 
 # Dns over HTTPS Servers (DoH) List Here https://dnscrypt.info/public-servers/
 # Only change if you know what your doing
