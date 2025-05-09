@@ -72,14 +72,14 @@
         group: root
       when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
-    - name: Download WG UI
+    - name: Download WG UI for x86_64
       ansible.builtin.unarchive:
         src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE }}"
         dest: /tmp
         remote_src: true
       when: ansible_architecture == 'x86_64'
 
-    - name: Download WG UI
+    - name: Download WG UI for arm64
       ansible.builtin.unarchive:
         src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE_ARM64 }}"
         dest: /tmp
