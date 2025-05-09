@@ -28,14 +28,23 @@
         group: root
       when: ansible_distribution == 'Debian'
 
-    - name: Copy over cloudflared apt repo for Ubuntu
+    - name: Copy over cloudflared apt repo for Ubuntu 22.04
       template:
         src: ../../templates/cloudflared_jammy.list.j2
         dest: /etc/apt/sources.list.d/cloudflared.list
         mode: u=rw,g=r,o=r
         owner: root
         group: root
-      when: ansible_distribution == 'Ubuntu'
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'jammy'
+
+    - name: Copy over cloudflared apt repo for Ubuntu 24.04
+      template:
+        src: ../../templates/cloudflared_noble.list.j2
+        dest: /etc/apt/sources.list.d/cloudflared.list
+        mode: u=rw,g=r,o=r
+        owner: root
+        group: root
+      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'noble'
 
     - name: Copy over cloudflared apt repo for RedHat and Variants
       template:
