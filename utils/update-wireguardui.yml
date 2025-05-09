@@ -1,0 +1,45 @@
+---
+- name: Update wireguard-ui
+  hosts: wg_vpn
+  vars_files:
+    - "../vars/vars.yml"
+  become: true
+
+  tasks:
+    - name: Download WG UI for x86_64
+      ansible.builtin.unarchive:
+        src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE }}"
+        dest: /tmp
+        remote_src: true
+      when: ansible_architecture == 'x86_64'
+
+    - name: Download WG UI for arm64
+      ansible.builtin.unarchive:
+        src: "{{  WGUI_DOWNLOAD }}{{ WGUI_FILE_ARM64 }}"
+        dest: /tmp
+        remote_src: true
+      when: ansible_architecture == 'arm64'
+
+    - name: Copy over WG UI to final destination
+      ansible.builtin.copy:
+        src: /tmp/wireguard-ui
+        dest: /opt/wireguard-ui/wireguard-ui
+        remote_src: true
+        mode: u=rwx,g=rx,o=rx
+        owner: root
+        group: root
+
+    - name: Restart wireguard ui daemon
+      ansible.builtin.systemd:
+        name: wireguard-ui-daemon.service
+        state: restarted
+
+    - name: Restart wireguard ui path
+      ansible.builtin.systemd:
+        name: wgui.path
+        state: restarted
+
+    - name: Restart wireguard ui service
+      ansible.builtin.systemd:
+        name: wgui.service
+        state: restarted
