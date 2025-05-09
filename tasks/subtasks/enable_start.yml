@@ -20,7 +20,7 @@
         masked: no
         state: restarted
 
-    - name: Enable wireguard ui path
+    - name: Enable wireguard ui service
       ansible.builtin.systemd:
         name: wgui.service
         enabled: true
