@@ -25,7 +25,6 @@
         path: /etc/systemd/system/dnscrypt-proxy.socket.d
         state: directory
         mode: '0755'
-      when: ansible_distribution in ["Debian", "Ubuntu"]
 
     - name: Copy over dnscrypt-proxy socket override
       template:
