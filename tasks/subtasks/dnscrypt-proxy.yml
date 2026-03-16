@@ -20,19 +20,17 @@
         state: latest
       when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
-    - name: Create override directory if it does not exist for Debian/Ubuntu
-      ansible.builtin.file:
-        path: /etc/systemd/system/dnscrypt-proxy.socket.d
-        state: directory
-        mode: '0755'
+    - name: Set interface in dnscrypt-proxy
+      ansible.builtin.lineinfile:
+        path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+        regexp: '^listen_addresses = .*'
+        line: "listen_addresses = ['127.0.0.1:5053']"
 
-    - name: Copy over dnscrypt-proxy socket override
-      template:
-        src: ../../templates/dnscrypt-override.conf.j2
-        dest: /etc/systemd/system/dnscrypt-proxy.socket.d/override.conf
-        mode: u=rw,g=r,o=r
-        owner: root
-        group: root
+    - name: Set server-names
+      ansible.builtin.lineinfile:
+        path: /etc/dnscrypt-proxy/dnscrypt-proxy.toml
+        regexp: '^server_names = .*'
+        line: "server_names = ['cloudflare-security']"
 
     - name: Reload systemd
       ansible.builtin.systemd:
