@@ -13,7 +13,7 @@
 
 - import_playbook: subtasks/self_signed_cert.yml
 
-- import_playbook: subtasks/cloudflared.yml
+- import_playbook: subtasks/dnscrypt-proxy.yml
 
 - import_playbook: subtasks/selinux.yml
 
