@@ -20,6 +20,13 @@
         state: latest
       when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
+    - name: Create override directory if it does not exist for Debian/Ubuntu
+      ansible.builtin.file:
+        path: /etc/systemd/system/dnscrypt-proxy.socket.d
+        state: directory
+        mode: '0755'
+      when: ansible_distribution in ["Debian", "Ubuntu"]
+
     - name: Copy over dnscrypt-proxy socket override
       template:
         src: ../../templates/dnscrypt-override.conf.j2
