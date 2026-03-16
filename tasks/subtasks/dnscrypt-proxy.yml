@@ -6,97 +6,27 @@
   become: true
 
   tasks:
-    - name: Create keyring directory if it does not exist for Debian/Ubuntu
-      ansible.builtin.file:
-        path: /usr/share/keyrings
-        state: directory
-        mode: '0755'
-      when: ansible_distribution in ["Debian", "Ubuntu"]
-
-    - name: Download keyring file from cloudflare for Debian/Ubuntu
-      ansible.builtin.get_url:
-        url: https://pkg.cloudflare.com/cloudflare-main.gpg
-        dest: /usr/share/keyrings/cloudflare-main.gpg
-      when: ansible_distribution in ["Debian", "Ubuntu"]
-
-    - name: Copy over dnscrypt-proxy apt repo for Debian
-      template:
-        src: ../../templates/dnscrypt-proxy_bookworm.list.j2
-        dest: /etc/apt/sources.list.d/dnscrypt-proxy.list
-        mode: u=rw,g=r,o=r
-        owner: root
-        group: root
-      when: ansible_distribution == 'Debian'
-
-    - name: Copy over dnscrypt-proxy apt repo for Ubuntu 22.04
-      template:
-        src: ../../templates/dnscrypt-proxy_jammy.list.j2
-        dest: /etc/apt/sources.list.d/dnscrypt-proxy.list
-        mode: u=rw,g=r,o=r
-        owner: root
-        group: root
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'jammy'
-
-    - name: Copy over dnscrypt-proxy apt repo for Ubuntu 24.04
-      template:
-        src: ../../templates/dnscrypt-proxy_noble.list.j2
-        dest: /etc/apt/sources.list.d/dnscrypt-proxy.list
-        mode: u=rw,g=r,o=r
-        owner: root
-        group: root
-      when: ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'noble'
-
-    - name: Copy over dnscrypt-proxy apt repo for RedHat and Variants
-      template:
-        src: ../../templates/dnscrypt-proxy-ascii_rhel_generic.repo.j2
-        dest: /etc/yum.repos.d/dnscrypt-proxy.repo
-        mode: u=rw,g=r,o=r
-        owner: root
-        group: root
-      when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
-
-    - name: Update repositories cache and install "dnscrypt-proxy" package for Debian/Ubuntu
+    - name: Install "dnscrypt-proxy" package for Debian/Ubuntu
       ansible.builtin.apt:
         name: dnscrypt-proxy
         update_cache: true
         state: present
       when: ansible_distribution in ["Debian", "Ubuntu"]
 
-    - name: Update repositories cache and install "dnscrypt-proxy" package RedHat/Alma/Amazon
+    - name: Install "dnscrypt-proxy" package RedHat/Alma/Amazon
       ansible.builtin.dnf:
         name: dnscrypt-proxy
         update_cache: true
         state: latest
       when: ansible_distribution in ["Fedora", "CentOS", "AlmaLinux"]
 
-    - name: Add dnscrypt-proxy user
-      ansible.builtin.user:
-        name: dnscrypt-proxy
-        system: true
-        create_home: false
-        shell: /usr/sbin/nologin
-
-    - name: Copy over dnscrypt-proxy config
+    - name: Copy over dnscrypt-proxy socket override
       template:
-        src: ../../templates/dnscrypt-proxy.j2
-        dest: /etc/default/dnscrypt-proxy
+        src: ../../templates/dnscrypt-override.conf.j2
+        dest: /etc/systemd/system/dnscrypt-proxy.socket.d/override.conf
         mode: u=rw,g=r,o=r
-        owner: dnscrypt-proxy
-        group: dnscrypt-proxy
-
-    - name: Change ownership on cloudflard
-      ansible.builtin.file:
-        path: /usr/bin/dnscrypt-proxy
-        owner: dnscrypt-proxy
-        group: dnscrypt-proxy
-
-    - name: Copy over dnscrypt-proxy systemd service
-      ansible.builtin.copy:
-        src: ../../systemd/dnscrypt-proxy.service
-        dest: /etc/systemd/system/dnscrypt-proxy.service
-        mode: u=rw,g=r,o=r
-        owner: dnscrypt-proxy
-        group: dnscrypt-proxy
+        owner: root
+        group: root
 
     - name: Reload systemd
       ansible.builtin.systemd:
